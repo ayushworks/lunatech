@@ -10,7 +10,7 @@ GET     /                           controllers.QueryController.index
 GET     /country/name/:name         controllers.QueryController.getCountryByName(name: String)
 
 # Get Country by id
-GET     /country/id/:id             controllers.QueryController.getCountryById(id: Long)
+GET     /country/code/:code         controllers.QueryController.getCountryByCode(code: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
