@@ -34,7 +34,9 @@ class DataProviderImpl @Inject() (configuration: Configuration, appLifecycle: Ap
 
     val reader = rawData.readCsv[List, Airport](rfc.withHeader)
 
-    val list = reader.filter(d => d.isSuccess).map(x => x.get)
+    val list = reader.filter(d => d.isSuccess).map{
+      x => x.get
+    }
 
     logger.info(s"loaded ${list.size} airports")
 
@@ -77,7 +79,7 @@ object DataProviderImpl {
   var runways : List[Runway] = List[Runway]();
   lazy val topCountryByAirports  = topCountryAirports
   lazy val countryByRunways = countryByRunwayTypes
-  //var countryAirPortMap : Map[String, Airport] = Map[String,Airport]()
+  var countryAirPortMap : Map[String, Airport] = Map[String,Airport]()
 
 
   def loadCountries(list : List[Country]) = {
