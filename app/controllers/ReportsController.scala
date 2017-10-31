@@ -6,14 +6,9 @@ import play.api._
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
 import services.DataProviderImpl
-import services.JoinUtil
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-/**
-  * This controller creates an `Action` to handle HTTP requests to the
-  * application's home page.
-  */
 @Singleton
 class ReportsController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 

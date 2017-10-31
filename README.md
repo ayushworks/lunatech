@@ -1,4 +1,18 @@
-### Support for following operations 
+### Starting the application
+
+```
+sbt run
+```
+
+##### Application gets started at port 9000 by default
+
+### Running Test cases
+
+```
+sbt test
+```
+
+### Support for following operations
 
 
 #### 1) Query a country by name or code
@@ -80,7 +94,7 @@ GET     /country/code/:code
 
 #### 2) Generate reports
 
-##### 2.a) Top 10 countries by number of Airport
+##### 2.a) Top 10 countries with Most and Least airports
 
 ```
 
@@ -139,6 +153,56 @@ GET     /country/airports
         "country_name": "United States",
         "country_code": "US",
         "airports": 21306
+    },
+    {
+        "country_name": "Montserrat",
+        "country_code": "MS",
+        "airports": 1
+    },
+    {
+        "country_name": "Christmas Island",
+        "country_code": "CX",
+        "airports": 1
+    },
+    {
+        "country_name": "Aruba",
+        "country_code": "AW",
+        "airports": 1
+    },
+    {
+        "country_name": "Norfolk Island",
+        "country_code": "NF",
+        "airports": 1
+    },
+    {
+        "country_name": "Sint Maarten",
+        "country_code": "SX",
+        "airports": 1
+    },
+    {
+        "country_name": "Gambia",
+        "country_code": "GM",
+        "airports": 1
+    },
+    {
+        "country_name": "Mayotte",
+        "country_code": "YT",
+        "airports": 1
+    },
+    {
+        "country_name": "CuraÃ§ao",
+        "country_code": "CW",
+        "airports": 1
+    },
+    {
+        "country_name": "Monaco",
+        "country_code": "MC",
+        "airports": 1
+    },
+    {
+        "country_name": "Saint BarthÃ©lemy",
+        "country_code": "BL",
+        "airports": 1
     }
 ]
 ```
