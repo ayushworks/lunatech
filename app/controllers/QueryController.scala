@@ -1,13 +1,12 @@
 package controllers
 
 import javax.inject._
-
-import models.{AirportRunwayResult, Country, QueryResult}
+import models.{CountryAirportResult, Country, QueryResult}
 import play.api._
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
 import services.DataProviderImpl
-
+import services.JoinUtil
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -35,16 +34,15 @@ class QueryController @Inject()(cc: ControllerComponents) extends AbstractContro
     implicit request: Request[AnyContent] =>
       queryLogger.info(s"Received country by name request for param ${name}")
       Future{
-        val countryOption = DataProviderImpl.countries.filter(c => c.name.equals(name)).headOption
+        import QueryResult.resultWrites
+
+        val countryOption = DataProviderImpl.countries.filter(c => c.name.equalsIgnoreCase(name) || c.name.toLowerCase.startsWith(name.toLowerCase)).headOption
         if(countryOption.isDefined) {
-          val country = countryOption.get
-          val airports = DataProviderImpl.airports.filter(a => a.iso_country.equals(country.code))
-          val runways = airports.map {
-            a => AirportRunwayResult(a, DataProviderImpl.runways.filter(r => r.airport_ref==a.id || r.airport_ident.equals(a.ident)))
-          }
-          Ok(Json.toJson(QueryResult(country,runways)))
+          Ok(Json.toJson(JoinUtil.joinCountryAirportRunways(countryOption.get)))
         }
-        else Ok(s"Cannot find country with name ${name}")
+        else {
+          Ok(s"Cannot find country with name ${name}")
+        }
       }
   }
 
@@ -52,9 +50,14 @@ class QueryController @Inject()(cc: ControllerComponents) extends AbstractContro
     implicit request: Request[AnyContent] =>
       queryLogger.info(s"Received country by code request for param ${code}")
       Future{
-        Ok(convertCountriesToJson(DataProviderImpl.countries.filter(c => c.code.equals(code))))
+        import QueryResult.resultWrites
+
+        val countryOption = DataProviderImpl.countries.filter(c => c.code.equals(code)).headOption
+        if(countryOption.isDefined) {
+          Ok(Json.toJson(JoinUtil.joinCountryAirportRunways(countryOption.get)))
+        }
+        else Ok(s"Cannot find country with code ${code}")
       }
   }
 
-  def convertCountriesToJson(countries: Seq[Country]): JsValue = Json.toJson(countries)
 }

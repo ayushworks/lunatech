@@ -1,8 +1,7 @@
 package services
 
 import javax.inject._
-
-import models.{Airport, Country, Runway}
+import models.{Airport, Country, Runway, AirportRunwayResult, CountryAirportResult, CountryRunwayType}
 import play.api.{Configuration, Logger}
 import play.api.inject.ApplicationLifecycle
 import kantan.csv._
@@ -76,6 +75,10 @@ object DataProviderImpl {
   var countries : List[Country] = List[Country]();
   var airports : List[Airport] = List[Airport]();
   var runways : List[Runway] = List[Runway]();
+  lazy val topCountryByAirports  = topCountryAirports
+  lazy val countryByRunways = countryByRunwayTypes
+  //var countryAirPortMap : Map[String, Airport] = Map[String,Airport]()
+
 
   def loadCountries(list : List[Country]) = {
     countries = list;
@@ -87,6 +90,30 @@ object DataProviderImpl {
 
   def loadRunways(list : List[Runway]) = {
     runways = list;
+  }
+
+  private def topCountryAirports : List[CountryAirportResult] = {
+      val countryAirportResultList = countries.map {
+        c => JoinUtil.joinCountryAirport(c)
+      }
+      countryAirportResultList.sortBy(x => x.airport.size).takeRight(10)
+  }
+
+  private def countryByRunwayTypes : List[CountryRunwayType] = {
+    val countryAirportResultList = countries.map {
+      country => JoinUtil.joinCountryAirportRunways(country)
+    }
+
+    countryAirportResultList.map {
+      val surfaces =  scala.collection.mutable.Set[String]()
+      country =>
+        country.airportRunwayList.map {
+        x => x.runwayList.map {
+          y => surfaces.add(y.surface)
+        }
+      }
+      CountryRunwayType(country.country, surfaces.toSet)
+    }
   }
 }
 

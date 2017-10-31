@@ -12,5 +12,11 @@ GET     /country/name/:name         controllers.QueryController.getCountryByName
 # Get Country by id
 GET     /country/code/:code         controllers.QueryController.getCountryByCode(code: String)
 
+# Get Top 10 country by number of airports
+GET     /country/airports           controllers.ReportsController.report()
+
+# Get country and runway surfaces
+GET     /country/runways           controllers.ReportsController.report1()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
