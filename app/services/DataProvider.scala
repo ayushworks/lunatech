@@ -16,7 +16,7 @@ class DataProviderImpl @Inject() (configuration: Configuration, appLifecycle: Ap
 
   val logger: Logger = Logger(this.getClass)
 
-  def goodbye(): Unit = println("Goodbye!")
+  def goodbye = logger.info("Goodbye!")
 
   def loadCountries = {
     logger.info("loading countries data")
@@ -78,7 +78,7 @@ class DataProviderImpl @Inject() (configuration: Configuration, appLifecycle: Ap
   // ApplicationLifecycle object. The code inside the stop hook will
   // be run when the application stops.
   appLifecycle.addStopHook { () =>
-    goodbye()
+    goodbye
     Future.successful(())
   }
 
