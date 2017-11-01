@@ -16,7 +16,7 @@ class ReportsController @Inject()(cc: ControllerComponents) extends AbstractCont
 
   def report() = Action.async {
     implicit request: Request[AnyContent] =>
-      reportsLogger.info(s"Received generate report request")
+      reportsLogger.info(s"Received report request - get country by airports")
       Future{
         Ok(Json.toJson(DataProviderImpl.topCountryByAirports))
       }
@@ -24,11 +24,10 @@ class ReportsController @Inject()(cc: ControllerComponents) extends AbstractCont
 
   def report1() = Action.async {
     implicit request: Request[AnyContent] =>
-      reportsLogger.info(s"Received generate report request 2")
+      reportsLogger.info(s"Received report request - get country by runways")
       Future{
         Ok(Json.toJson(DataProviderImpl.countryByRunways))
       }
   }
 
-  def convertCountriesToJson(countries: Seq[Country]): JsValue = Json.toJson(countries)
 }

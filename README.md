@@ -24,6 +24,8 @@ sbt test
 GET     /country/name/:name 
 ```
 
+#####** This end point also supports partial match. If country name is passes as "Andor" then the controller will return result for country Andorra**
+
 ###### Sample response 
 
 ```
@@ -262,3 +264,8 @@ GET     /country/runways
 ```
 
 ##### The miscroservice is deployed on localhost:9000 and uses play 2.6 as a web framework along with scala as programming language
+
+##### TODO's
+
+###### ~~1) Write test for Report Controller~~
+###### 2) Report Controller should also list most frequently used runway identifiers

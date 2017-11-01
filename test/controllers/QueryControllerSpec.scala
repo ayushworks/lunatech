@@ -9,7 +9,7 @@ class QueryControllerSpec extends PlaySpec with GuiceOneAppPerSuite with Injecti
 
   "QueryController country by name GET" should {
 
-    "render the country details from a new instance of controller" in {
+    "render the country details" in {
       val controller = new QueryController(stubControllerComponents())
       val country = controller.getCountryByName("Andorra").apply(FakeRequest(GET, "/country/name/Andorra"))
 
@@ -24,7 +24,7 @@ class QueryControllerSpec extends PlaySpec with GuiceOneAppPerSuite with Injecti
 
   "QueryController country by code GET" should {
 
-    "render the country details from a new instance of controller" in {
+    "render the country details" in {
       val controller = new QueryController(stubControllerComponents())
       val country = controller.getCountryByCode("AD").apply(FakeRequest(GET, "/country/code/AD"))
 

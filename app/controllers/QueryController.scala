@@ -14,13 +14,7 @@ class QueryController @Inject()(cc: ControllerComponents) extends AbstractContro
 
   val queryLogger: Logger = Logger(this.getClass)
 
-  /**
-   * Create an Action to render an HTML page.
-   *
-   * The configuration in the `routes` file means that this method
-   * will be called when the application receives a `GET` request with
-   * a path of `/`.
-   */
+
   def index() = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }
@@ -30,7 +24,7 @@ class QueryController @Inject()(cc: ControllerComponents) extends AbstractContro
       queryLogger.info(s"Received country by name request for param ${name}")
       Future{
         import QueryResult.resultWrites
-        val result = DataProviderImpl.route1(name)
+        val result = DataProviderImpl.queryByCountryName(name)
         if(result.isDefined) {
           Ok(Json.toJson(result.get))
         }
@@ -45,7 +39,7 @@ class QueryController @Inject()(cc: ControllerComponents) extends AbstractContro
       queryLogger.info(s"Received country by code request for param ${code}")
       Future{
         import QueryResult.resultWrites
-        val result = DataProviderImpl.route2(code)
+        val result = DataProviderImpl.queryByCountryCode(code)
         if(result.isDefined) {
           Ok(Json.toJson(result.get))
         }

@@ -25,7 +25,6 @@ class DataProviderImpl @Inject() (configuration: Configuration, appLifecycle: Ap
 
     val reader = rawData.readCsv[List, Country](rfc.withHeader)
 
-    //DataProviderImpl.loadCountries(reader.filter(d => d.isSuccess).map(x => x.get))
     reader.filter(d => d.isSuccess).map {
       x =>
         val country = x.get
@@ -73,12 +72,8 @@ class DataProviderImpl @Inject() (configuration: Configuration, appLifecycle: Ap
           DataProviderImpl.runwayByAirports(runway.airport_ident) = List[Runway](runway)
         }
     }
-
-    //logger.info(s"loaded ${list.size} runways")
-
-    //DataProviderImpl.loadRunways(list)
-
   }
+
   // When the application starts, register a stop hook with the
   // ApplicationLifecycle object. The code inside the stop hook will
   // be run when the application stops.
@@ -102,16 +97,14 @@ object DataProviderImpl {
 
   var countryByCode = scala.collection.mutable.Map[String, Country]()
   var countryByName = scala.collection.mutable.Map[String, Country]()
+
   //key is country code, iso_code of airports
   var airportsByCountry = scala.collection.mutable.Map[String, List[Airport]]()
+
   //key is ident Airport, ident_ref of Runway
   var runwayByAirports = scala.collection.mutable.Map[String, List[Runway]]()
-  /*
-    case class QueryResult(country: Country, airportRunwayList: Seq[AirportRunwayResult])
 
-  case class AirportRunwayResult(airport: Airport, runwayList: Seq[Runway])
-   */
-  def route1(name: String) : Option[QueryResult] = {
+  def queryByCountryName(name: String) : Option[QueryResult] = {
     var countryOption = countryByName.get(name)
     //fuzzy search
     if(!countryOption.isDefined) {
@@ -132,7 +125,7 @@ object DataProviderImpl {
   }
 
 
-  def route2(code: String) : Option[QueryResult] = {
+  def queryByCountryCode(code: String) : Option[QueryResult] = {
     val countryOption = countryByCode.get(code)
     countryOption.map{
       country =>
